@@ -5,6 +5,7 @@ playervar bastionTargetArray = []
 playervar bastionTargetDistances = []
 playervar bastionCurrentTarget
 playervar bastionTransform = false
+playervar bastionTransformActive = false
 
 subroutine bastionTransform
 
@@ -13,6 +14,8 @@ rule "bastionInit":
     @Team 2
 
     eventPlayer.setKnockbackReceived(0)
+    eventPlayer.setAbilityCooldown(Button.ABILITY_1, 0)
+    eventPlayer.setAbilityCharge(Button.ABILITY_1, 10)
 
 rule "bastionTick":
     @Event eachPlayer
@@ -61,8 +64,19 @@ rule "bastionTick":
     loop()
 
 def bastionTransform():
-    eventPlayer.stopForcingButton(Button.PRIMARY_FIRE)
-    eventPlayer.bastionTransform = not eventPlayer.bastionTransform
-    eventPlayer.startForcingButton(Button.ABILITY_1)
-    wait(0.05)
-    eventPlayer.stopForcingButton(Button.ABILITY_1)
+    if eventPlayer.bastionTransformActive == false:
+        eventPlayer.bastionTransformActive = true
+
+        while eventPlayer.bastionTransformActive == true:
+            eventPlayer.bastionTransform = not eventPlayer.bastionTransform
+
+            eventPlayer.stopForcingButton(Button.PRIMARY_FIRE)
+
+            eventPlayer.startForcingButton(Button.ABILITY_1)
+            wait(0.05)
+            eventPlayer.stopForcingButton(Button.ABILITY_1)
+
+            eventPlayer.bastionTransformActive = false
+    
+    else:
+        pass

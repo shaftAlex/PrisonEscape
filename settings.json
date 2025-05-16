@@ -35,6 +35,9 @@
             "general": {
                 "abilityCooldown%": 50,
                 "enableUlt": false
+            },
+            "roadhog": {
+                "enableAbility1": false
             }
         },
         "team2": {

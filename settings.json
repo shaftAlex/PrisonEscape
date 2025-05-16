@@ -1,0 +1,46 @@
+{
+    "main": {
+        "description": "YETVG",
+        "modeName": "Prison Escape 2"
+    },
+    "lobby": {
+        "allowPlayersInQueue": true,
+        "mapRotation": "afterGame",
+        "enableMatchVoiceChat": true,
+        "team1Slots": 10,
+        "team2Slots": 0,
+        "returnToLobby": "never",
+        "swapTeamsAfterMatch": false
+    },
+    "gamemodes": {
+        "skirmish": {
+            "enabledMaps": [
+                "watchpointGibraltar"
+            ]
+        },
+        "general": {
+            "enableEnemyHealthBars": false,
+            "gamemodeStartTrigger": "immediately",
+            "healthPackRespawnTime%": 11,
+            "heroLimit": "off",
+            "enableKillCam": false,
+            "enableKillFeed": false,
+            "respawnTime%": 0,
+            "spawnHealthPacks": "enabled",
+            "tankPassiveHealthBonus": "alwaysEnabled"
+        }
+    },
+    "heroes": {
+        "team1": {
+            "general": {
+                "abilityCooldown%": 50,
+                "enableUlt": false
+            }
+        },
+        "team2": {
+            "bastion": {
+                "ability1Cooldown%": 0
+            }
+        }
+    }
+}

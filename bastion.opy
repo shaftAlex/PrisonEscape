@@ -4,6 +4,7 @@ playervar bastionIterator = 0
 playervar bastionTargetArray = []
 playervar bastionTargetDistances = []
 playervar bastionCurrentTarget
+playervar bastionSpawnPosition = vect(0, 0, 0)
 playervar bastionTransform = false
 playervar bastionTransformActive = false
 
@@ -14,19 +15,28 @@ rule "bastionInit":
     @Team 2
 
     eventPlayer.setKnockbackReceived(0)
-    eventPlayer.setAbilityCooldown(Button.ABILITY_1, 0)
-    eventPlayer.setAbilityCharge(Button.ABILITY_1, 10)
+    # eventPlayer.setAbilityCooldown(Button.ABILITY_1, 0)
+    # eventPlayer.setAbilityCharge(Button.ABILITY_1, 10)
+    
+rule "bastionSpawned":
+    @Event eachPlayer
+    @Team 2
+    @Condition eventPlayer.hasSpawned()
+    
+    eventPlayer.bastionSpawnPosition = eventPlayer.getPosition()
 
 rule "bastionTick":
     @Event eachPlayer
     @Team 2
 
+    eventPlayer.teleport(eventPlayer.bastionSpawnPosition)
+
     eventPlayer.setHealth(eventPlayer.getMaxHealth())
 
     eventPlayer.bastionTargetArray = getRealPlayersInRadius(eventPlayer.getEyePosition(), bastionAttackRange, Team.1, LosCheck.SURFACES)
 
-    if eventPlayer.isHoldingButton(Button.PRIMARY_FIRE) and eventPlayer.bastionTransform == false:
-        bastionTransform()
+    # if eventPlayer.isHoldingButton(Button.PRIMARY_FIRE) and eventPlayer.bastionTransform == false:
+    #     bastionTransform()
         
     if eventPlayer.bastionTargetArray == not []:
         if not eventPlayer.isHoldingButton(Button.PRIMARY_FIRE):
@@ -36,8 +46,11 @@ rule "bastionTick":
         eventPlayer.stopForcingButton(Button.PRIMARY_FIRE)
     
     if eventPlayer.bastionTargetArray == not []:
-        if eventPlayer.bastionTransform == false:
-            bastionTransform()
+        # if eventPlayer.bastionTransform == false:
+        #     bastionTransform()
+        if eventPlayer.isInAlternateForm() == false:
+            eventPlayer.startForcingButton(Button.ABILITY_1)
+            eventPlayer.stopForcingButton(Button.ABILITY_1)
         else:
             pass
 
@@ -55,8 +68,9 @@ rule "bastionTick":
         eventPlayer.bastionTargetArray = []
         eventPlayer.bastionCurrentTarget = null
 
-        if eventPlayer.bastionTransform == true:
-            bastionTransform()
+        if eventPlayer.isInAlternateForm() == true:
+            eventPlayer.startForcingButton(Button.ABILITY_1)
+            eventPlayer.stopForcingButton(Button.ABILITY_1)
         else:
             pass
 

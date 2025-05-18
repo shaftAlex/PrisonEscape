@@ -7,7 +7,7 @@ playervar distancePercent
 playervar deathCount = 0
 playervar deathEffect = false
 playervar deathEffectTextEntity
-playervar heroIndex = 0
+playervar heroIndex = 40
 playervar heroArray = []
 playervar isHelper = false
 
@@ -78,13 +78,13 @@ rule "playerReachedGoal":
 
     eventPlayer.deathCount = 0
 
-    if eventPlayer.heroIndex <= 42:
+    if eventPlayer.heroIndex < 43:
         eventPlayer.heroIndex += 1
 
-    if eventPlayer.heroIndex < 42:
+    if eventPlayer.heroIndex < 43:
         nextHero()
         disableDeathEffect()
-    elif eventPlayer.heroIndex == 42:
+    elif eventPlayer.heroIndex == 44:
         becomeHelper()
     else:
         pass
@@ -114,6 +114,7 @@ rule "playerRerollInteract":
     eventPlayer.heroArray = random.shuffle(getAllHeroes())
     eventPlayer.startForcingHero(eventPlayer.heroArray[eventPlayer.heroIndex])
     eventPlayer.respawn()
+    disableDeathEffect()
 
     bigMessage(eventPlayer, "Rerolled!")
 
